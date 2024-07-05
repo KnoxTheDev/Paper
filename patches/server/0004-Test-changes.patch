@@ -386,6 +386,18 @@ index ee5ab15bb0bfeb0ff6fa0d720eeff086d92cb459..7419ea2f68607aad27929a608c402bd4
  public class ExplosionResultTest {
  
      @Test
+diff --git a/src/test/java/org/bukkit/MaterialTest.java b/src/test/java/org/bukkit/MaterialTest.java
+index d4bfec42faf0c3cc1746bf8ac43526fa4494b526..6e43a70b96b006f2d44cc4d3e8a7cc7c9f5cea97 100644
+--- a/src/test/java/org/bukkit/MaterialTest.java
++++ b/src/test/java/org/bukkit/MaterialTest.java
+@@ -53,6 +53,7 @@ public class MaterialTest {
+     }
+ 
+     @Test
++    @org.junit.jupiter.api.Disabled // Paper - order is now alphabetically
+     public void verifyMaterialOrder() {
+         List<Material> expectedOrder = new ArrayList<>(Material.values().length);
+ 
 diff --git a/src/test/java/org/bukkit/registry/RegistryClassTest.java b/src/test/java/org/bukkit/registry/RegistryClassTest.java
 index 297700b237bbd8d5ff9116919f203c82b4037968..ea3d37f387bdb0dd5ae3fba9231ace31d0cebd64 100644
 --- a/src/test/java/org/bukkit/registry/RegistryClassTest.java

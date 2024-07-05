@@ -1,0 +1,6 @@
+[*.java]
+ij_java_generate_final_locals = false
+ij_java_generate_final_parameters = false
+
+[generated{Api,Server}/**/*.java]
+ij_java_imports_layout = $*, |, *
