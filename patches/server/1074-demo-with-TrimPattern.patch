@@ -1,0 +1,138 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Jake Potrebic <jake.m.potrebic@gmail.com>
+Date: Tue, 26 Nov 2024 20:17:25 -0800
+Subject: [PATCH] demo with TrimPattern
+
+
+diff --git a/src/main/java/io/papermc/paper/registry/PaperRegistries.java b/src/main/java/io/papermc/paper/registry/PaperRegistries.java
+index 21f5c8af86c866ff7e0f7af3b3b810824b087d26..16f3e4f31176b60c7e01aa1e7e7c31f5d7dff0a9 100644
+--- a/src/main/java/io/papermc/paper/registry/PaperRegistries.java
++++ b/src/main/java/io/papermc/paper/registry/PaperRegistries.java
+@@ -7,6 +7,7 @@ import io.papermc.paper.datacomponent.PaperComponentType;
+ import io.papermc.paper.registry.data.PaperEnchantmentRegistryEntry;
+ import io.papermc.paper.registry.data.PaperGameEventRegistryEntry;
+ import io.papermc.paper.registry.data.PaperPaintingVariantRegistryEntry;
++import io.papermc.paper.registry.data.PaperTrimPatternRegistryEntry;
+ import io.papermc.paper.registry.entry.RegistryEntry;
+ import io.papermc.paper.registry.tag.TagKey;
+ import java.util.Collections;
+@@ -101,7 +102,7 @@ public final class PaperRegistries {
+             start(Registries.BIOME, RegistryKey.BIOME).craft(Biome.class, CraftBiome::new).build().delayed(),
+             start(Registries.STRUCTURE, RegistryKey.STRUCTURE).craft(Structure.class, CraftStructure::new).build().delayed(),
+             start(Registries.TRIM_MATERIAL, RegistryKey.TRIM_MATERIAL).craft(TrimMaterial.class, CraftTrimMaterial::new).build().delayed(),
+-            start(Registries.TRIM_PATTERN, RegistryKey.TRIM_PATTERN).craft(TrimPattern.class, CraftTrimPattern::new).build().delayed(),
++            start(Registries.TRIM_PATTERN, RegistryKey.TRIM_PATTERN).craft(TrimPattern.class, CraftTrimPattern::new).writable(PaperTrimPatternRegistryEntry.PaperBuilder::new).delayed(),
+             start(Registries.DAMAGE_TYPE, RegistryKey.DAMAGE_TYPE).craft(DamageType.class, CraftDamageType::new).build().delayed(),
+             start(Registries.WOLF_VARIANT, RegistryKey.WOLF_VARIANT).craft(Wolf.Variant.class, CraftWolf.CraftVariant::new).build().delayed(),
+             start(Registries.ENCHANTMENT, RegistryKey.ENCHANTMENT).craft(Enchantment.class, CraftEnchantment::new).writable(PaperEnchantmentRegistryEntry.PaperBuilder::new).withSerializationUpdater(FieldRename.ENCHANTMENT_RENAME).delayed(),
+diff --git a/src/main/java/io/papermc/paper/registry/data/PaperTrimPatternRegistryEntry.java b/src/main/java/io/papermc/paper/registry/data/PaperTrimPatternRegistryEntry.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b86f9e63365b8e5c2034c7f87f55a9034f5050c
+--- /dev/null
++++ b/src/main/java/io/papermc/paper/registry/data/PaperTrimPatternRegistryEntry.java
+@@ -0,0 +1,105 @@
++package io.papermc.paper.registry.data;
++
++import io.papermc.paper.adventure.PaperAdventure;
++import io.papermc.paper.registry.PaperRegistries;
++import io.papermc.paper.registry.PaperRegistryBuilder;
++import io.papermc.paper.registry.TypedKey;
++import io.papermc.paper.registry.data.util.Conversions;
++import net.kyori.adventure.key.Key;
++import net.minecraft.core.Holder;
++import net.minecraft.core.HolderGetter;
++import net.minecraft.core.registries.Registries;
++import net.minecraft.network.chat.Component;
++import net.minecraft.resources.ResourceLocation;
++import net.minecraft.world.item.Item;
++import org.bukkit.inventory.ItemType;
++import org.bukkit.inventory.meta.trim.TrimPattern;
++import org.jspecify.annotations.Nullable;
++
++import static io.papermc.paper.registry.data.util.Checks.asConfigured;
++
++public class PaperTrimPatternRegistryEntry implements TrimPatternRegistryEntry {
++
++    protected @Nullable ResourceLocation assetId;
++    protected @Nullable Holder<Item> templateItem;
++    protected @Nullable Component description;
++    protected boolean decal = false;
++    protected final Conversions conversions;
++
++    public PaperTrimPatternRegistryEntry(
++        final Conversions conversions,
++        final net.minecraft.world.item.equipment.trim.@Nullable TrimPattern internal
++    ) {
++        this.conversions = conversions;
++        if (internal == null) return;
++
++        this.assetId = internal.assetId();
++        this.templateItem = internal.templateItem();
++        this.description = internal.description();
++        this.decal = internal.decal();
++    }
++
++    @Override
++    public Key assetId() {
++        return PaperAdventure.asAdventure(asConfigured(this.assetId, "assetId"));
++    }
++
++    @Override
++    public TypedKey<ItemType> templateItem() {
++        return PaperRegistries.fromNms(asConfigured(this.templateItem, "templateItem").unwrapKey().orElseThrow()); // no inlined items
++    }
++
++    @Override
++    public net.kyori.adventure.text.Component description() {
++        return this.conversions.asAdventure(asConfigured(this.description, "description"));
++    }
++
++    @Override
++    public boolean decal() {
++        return this.decal;
++    }
++
++    public static final class PaperBuilder extends PaperTrimPatternRegistryEntry implements TrimPatternRegistryEntry.Builder, PaperRegistryBuilder<net.minecraft.world.item.equipment.trim.TrimPattern, TrimPattern> {
++
++        private final HolderGetter<Item> itemGetter;
++
++        public PaperBuilder(final Conversions conversions, final net.minecraft.world.item.equipment.trim.@Nullable TrimPattern internal) {
++            super(conversions, internal);
++            this.itemGetter = conversions.lookup().lookup(Registries.ITEM).orElseThrow().getter();
++        }
++
++        @Override
++        public Builder assetId(final Key assetId) {
++            this.assetId = PaperAdventure.asVanilla(assetId);
++            return this;
++        }
++
++        @Override
++        public Builder templateItem(final TypedKey<ItemType> templateItem) {
++            this.templateItem = this.itemGetter.getOrThrow(PaperRegistries.toNms(templateItem));
++            return this;
++        }
++
++        @Override
++        public Builder description(final net.kyori.adventure.text.Component description) {
++            this.description = this.conversions.asVanilla(description);
++            return this;
++        }
++
++        @Override
++        public Builder decal(final boolean decal) {
++            this.decal = decal;
++            return this;
++        }
++
++        @Override
++        public net.minecraft.world.item.equipment.trim.TrimPattern build() {
++            return new net.minecraft.world.item.equipment.trim.TrimPattern(
++                asConfigured(this.assetId, "assetId"),
++                asConfigured(this.templateItem, "templateItem"),
++                asConfigured(this.description, "description"),
++                this.decal()
++            );
++        }
++    }
++}

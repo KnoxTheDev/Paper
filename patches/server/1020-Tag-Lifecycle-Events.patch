@@ -461,10 +461,10 @@ index 0000000000000000000000000000000000000000..d6d4bfc6f45d646afeace422a038c670
 +) {
 +}
 diff --git a/src/main/java/net/minecraft/resources/RegistryDataLoader.java b/src/main/java/net/minecraft/resources/RegistryDataLoader.java
-index c5e279216f6cb880397ea2768ee6e99a8798e3e1..46bf2b95658ca3bbd3048df5f8adf1bdcc2d3571 100644
+index 94f49cb2d4b39b5a60bd7fbe50c9a6b5433fc040..271ecb77c3e51e6c7e625e742d88b10cf345b9a7 100644
 --- a/src/main/java/net/minecraft/resources/RegistryDataLoader.java
 +++ b/src/main/java/net/minecraft/resources/RegistryDataLoader.java
-@@ -278,7 +278,7 @@ public class RegistryDataLoader {
+@@ -277,7 +277,7 @@ public class RegistryDataLoader {
          }
  
          io.papermc.paper.registry.PaperRegistryListenerManager.INSTANCE.runFreezeListeners(registry.key(), conversions); // Paper - run pre-freeze listeners

@@ -1,0 +1,36 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Jake Potrebic <jake.m.potrebic@gmail.com>
+Date: Tue, 26 Nov 2024 20:17:35 -0800
+Subject: [PATCH] Expose building various registry types directly
+
+
+diff --git a/src/main/java/io/papermc/paper/registry/data/InlinedBuilderProviderImpl.java b/src/main/java/io/papermc/paper/registry/data/InlinedBuilderProviderImpl.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..056c791f1e17b77eef2500774e974edc1dc5beb9
+--- /dev/null
++++ b/src/main/java/io/papermc/paper/registry/data/InlinedBuilderProviderImpl.java
+@@ -0,0 +1,17 @@
++package io.papermc.paper.registry.data;
++
++import io.papermc.paper.registry.data.util.Conversions;
++import java.util.function.Consumer;
++import net.minecraft.core.Holder;
++import org.bukkit.craftbukkit.inventory.trim.CraftTrimPattern;
++import org.bukkit.inventory.meta.trim.TrimPattern;
++
++public class InlinedBuilderProviderImpl implements InlinedBuilderProvider {
++
++    @Override
++    public TrimPattern createTrimPattern(final Consumer<TrimPatternRegistryEntry.Builder> builderConsumer) {
++        final PaperTrimPatternRegistryEntry.PaperBuilder builder = new PaperTrimPatternRegistryEntry.PaperBuilder(Conversions.global(), null);
++        builderConsumer.accept(builder);
++        return new CraftTrimPattern(Holder.direct(builder.build()));
++    }
++}
+diff --git a/src/main/resources/META-INF/services/io.papermc.paper.registry.data.InlinedBuilderProvider b/src/main/resources/META-INF/services/io.papermc.paper.registry.data.InlinedBuilderProvider
+new file mode 100644
+index 0000000000000000000000000000000000000000..021f919fd70cdddd98f36d55ea920e3ce7df1dbb
+--- /dev/null
++++ b/src/main/resources/META-INF/services/io.papermc.paper.registry.data.InlinedBuilderProvider
+@@ -0,0 +1 @@
++io.papermc.paper.registry.data.InlinedBuilderProviderImpl
