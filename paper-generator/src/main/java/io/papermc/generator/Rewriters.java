@@ -20,8 +20,10 @@ import io.papermc.generator.rewriter.types.simple.MaterialRewriter;
 import io.papermc.generator.rewriter.types.simple.MemoryKeyRewriter;
 import io.papermc.generator.rewriter.types.registry.PaperFeatureFlagMapping;
 import io.papermc.generator.rewriter.types.simple.StatisticRewriter;
-import io.papermc.generator.rewriter.types.simple.VillagerProfessionRewriter;
+import io.papermc.generator.rewriter.types.simple.trial.DataComponentTypesRewriter;
+import io.papermc.generator.rewriter.types.simple.trial.VillagerProfessionRewriter;
 import io.papermc.generator.utils.Formatting;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.typewriter.preset.EnumCloneRewriter;
 import io.papermc.typewriter.preset.model.EnumValue;
 import java.util.Map;
@@ -175,6 +177,7 @@ public final class Rewriters {
             .register("Sound", Sound.class, new RegistryFieldRewriter<>(Registries.SOUND_EVENT, "getSound"))
             .register("Art", Art.class, new RegistryFieldRewriter<>(Registries.PAINTING_VARIANT, "getArt"))
             .register("MemoryKey", MemoryKey.class, new MemoryKeyRewriter())
+            .register("DataComponentTypes", DataComponentTypes.class, new DataComponentTypesRewriter())
             .register("ItemType", ItemType.class, new ItemTypeRewriter())
             .register("BlockType", BlockType.class, new BlockTypeRewriter())
             .register("FeatureFlag", FeatureFlag.class, new FeatureFlagRewriter())

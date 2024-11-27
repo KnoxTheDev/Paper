@@ -32,7 +32,7 @@ public class PaperRegistriesRewriter extends SearchReplaceRewriter {
         builder.append(", ");
         if (apiOnly) {
             if (entry.apiClass().isEnum()) {
-                builder.append(Types.PAPER_SIMPLE_REGISTRY.simpleName()).append("::").append(CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, entry.registryKey().location().getPath()));
+                builder.append(this.importCollector.getShortName(Types.PAPER_SIMPLE_REGISTRY)).append("::").append(CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, entry.registryKey().location().getPath()));
             } else {
                 builder.append("() -> ");
                 builder.append(Registry.class.getCanonicalName()).append('.').append(entry.apiRegistryField().orElse(entry.registryKeyField()));

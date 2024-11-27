@@ -4,6 +4,26 @@ Date: Wed, 14 Feb 2024 19:33:27 +0100
 Subject: [PATCH] Code generation marker stub
 
 
+diff --git a/src/main/java/io/papermc/paper/datacomponent/DataComponentTypes.java b/src/main/java/io/papermc/paper/datacomponent/DataComponentTypes.java
+index 68284abd5c4358617ee7766101e942f81a001e2c..df80f2988b08a9cfbae73e84ce77fe9ad43b37bf 100644
+--- a/src/main/java/io/papermc/paper/datacomponent/DataComponentTypes.java
++++ b/src/main/java/io/papermc/paper/datacomponent/DataComponentTypes.java
+@@ -63,6 +63,7 @@ import static java.util.Objects.requireNonNull;
+ @ApiStatus.Experimental
+ public final class DataComponentTypes {
+ 
++    // Paper start - Generated/DataComponentTypes
+     /**
+      * Controls the maximum stacking size of this item.
+      * <br>
+@@ -329,6 +330,7 @@ public final class DataComponentTypes {
+      * Holds the unresolved loot table and seed of a container-like block.
+      */
+     public static final DataComponentType.Valued<SeededContainerLoot> CONTAINER_LOOT = valued("container_loot");
++    // Paper end - Generated/DataComponentTypes
+ 
+     private static DataComponentType.NonValued unvalued(final String name) {
+         return (DataComponentType.NonValued) requireNonNull(Registry.DATA_COMPONENT_TYPE.get(NamespacedKey.minecraft(name)), name + " unvalued data component type couldn't be found, this is a bug.");
 diff --git a/src/main/java/io/papermc/paper/registry/event/RegistryEvents.java b/src/main/java/io/papermc/paper/registry/event/RegistryEvents.java
 index 40deffbd0930508bb04e9aedfd62ad2144855198..22b247fbb79135e1091bd7d62f721781edec6e2a 100644
 --- a/src/main/java/io/papermc/paper/registry/event/RegistryEvents.java
@@ -556,7 +576,7 @@ index 521f035409ee61a9ad73d39bec938f2938892570..b44b951561d69fbccd539aa9280340b7
      @NotNull
      private static Attribute getAttribute(@NotNull String key) {
 diff --git a/src/main/java/org/bukkit/block/Biome.java b/src/main/java/org/bukkit/block/Biome.java
-index 464f8f81ba907a61588e4ab869e4f8269830195a..a23c7451b317988619185ba15614d732170828ba 100644
+index 464f8f81ba907a61588e4ab869e4f8269830195a..8cc8c766e728f0bd05fd03205f55c8a8d466246e 100644
 --- a/src/main/java/org/bukkit/block/Biome.java
 +++ b/src/main/java/org/bukkit/block/Biome.java
 @@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
@@ -575,6 +595,15 @@ index 464f8f81ba907a61588e4ab869e4f8269830195a..a23c7451b317988619185ba15614d732
  
      /**
       * Represents a custom Biome
+@@ -102,7 +104,7 @@ public interface Biome extends OldEnum<Biome>, Keyed, net.kyori.adventure.transl
+ 
+     @NotNull
+     private static Biome getBiome(@NotNull String key) {
+-        return Registry.BIOME.getOrThrow(NamespacedKey.minecraft(key));
++        return Registry.BIOME.get(NamespacedKey.minecraft(key));
+     }
+ 
+     /**
 diff --git a/src/main/java/org/bukkit/block/BlockType.java b/src/main/java/org/bukkit/block/BlockType.java
 index f019d490794b49d21057820bab047e2f909934a1..fa458580525fba79bb81baa821cdb187f863ef74 100644
 --- a/src/main/java/org/bukkit/block/BlockType.java

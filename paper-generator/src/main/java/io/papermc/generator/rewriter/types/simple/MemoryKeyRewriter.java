@@ -27,6 +27,7 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
 import static io.papermc.generator.utils.Formatting.quoted;
 
+@Deprecated
 public class MemoryKeyRewriter extends RegistryFieldRewriter<MemoryModuleType<?>> {
 
     private static final Map<ResourceKey<MemoryModuleType<?>>, Class<?>> MEMORY_GENERIC_TYPES = RegistryEntries.byRegistryKey(Registries.MEMORY_MODULE_TYPE).getFields(field -> {

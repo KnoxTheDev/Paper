@@ -1,7 +1,6 @@
-package io.papermc.generator.rewriter.types.simple;
+package io.papermc.generator.rewriter.types.simple.trial;
 
 import io.papermc.generator.rewriter.types.registry.RegistryFieldRewriter;
-import io.papermc.generator.utils.Formatting;
 import io.papermc.typewriter.parser.Lexer;
 import io.papermc.typewriter.parser.sequence.SequenceTokens;
 import io.papermc.typewriter.parser.sequence.TokenTaskBuilder;
@@ -19,9 +18,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
-import org.jetbrains.annotations.ApiStatus;
 
-@ApiStatus.Experimental
 public class VillagerProfessionRewriter extends RegistryFieldRewriter<VillagerProfession> {
 
     public VillagerProfessionRewriter() {
@@ -35,31 +32,6 @@ public class VillagerProfessionRewriter extends RegistryFieldRewriter<VillagerPr
     );
 
     private @MonotonicNonNull Map<String, List<String>> javadocsPerConstant;
-
-    private static class ConstantInfo {
-        private @MonotonicNonNull String constantName;
-        private @MonotonicNonNull List<String> javadocs;
-
-        public void constantName(String name) {
-            this.constantName = name;
-        }
-
-        public void javadocs(List<String> javadocs) {
-            this.javadocs = javadocs;
-        }
-
-        public String constantName() {
-            return this.constantName;
-        }
-
-        public List<String> javadocs() {
-            return this.javadocs;
-        }
-
-        public boolean isComplete() {
-            return this.constantName != null && this.javadocs != null;
-        }
-    }
 
     private Map<String, List<String>> parseConstantJavadocs(String content) {
         Map<String, List<String>> map = new HashMap<>();
@@ -84,7 +56,7 @@ public class VillagerProfessionRewriter extends RegistryFieldRewriter<VillagerPr
                         }
                     });
             }, TokenTaskBuilder::asRepeatable)
-            .execute();
+            .executeOrThrow();
         /*
         for enums:
         Set<TokenType> endMarkers = Set.of(TokenType.CO, TokenType.SECO); // move to static
@@ -107,7 +79,7 @@ public class VillagerProfessionRewriter extends RegistryFieldRewriter<VillagerPr
                         }
                     });
             }, TokenTaskBuilder::asRepeatable)
-            .execute();
+            .executeOrThrow();
         */
 
         return map;
@@ -121,12 +93,15 @@ public class VillagerProfessionRewriter extends RegistryFieldRewriter<VillagerPr
 
     @Override
     protected void rewriteJavadocs(Holder.Reference<VillagerProfession> reference, String indent, StringBuilder builder) {
-        String constantName = Formatting.formatKeyAsField(reference.key().location().getPath());
+        String constantName = this.rewriteFieldName(reference);
         if (this.javadocsPerConstant.containsKey(constantName)) {
             builder.append(indent).append("/**");
             builder.append('\n');
             for (String line : this.javadocsPerConstant.get(constantName)) {
-                builder.append(indent).append(" * ").append(line);
+                builder.append(indent).append(" *");
+                if (!line.isEmpty()) {
+                    builder.append(' ').append(line);
+                }
                 builder.append('\n');
             }
             builder.append(indent).append(" */");

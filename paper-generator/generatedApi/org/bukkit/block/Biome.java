@@ -169,7 +169,7 @@ public interface Biome extends OldEnum<Biome>, Keyed, net.kyori.adventure.transl
 
     @NotNull
     private static Biome getBiome(@NotNull String key) {
-        return Registry.BIOME.getOrThrow(NamespacedKey.minecraft(key));
+        return Registry.BIOME.get(NamespacedKey.minecraft(key));
     }
 
     /**
