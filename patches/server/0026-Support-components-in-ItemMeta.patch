@@ -5,7 +5,7 @@ Subject: [PATCH] Support components in ItemMeta
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
-index 626fe2af05fecd41b777b5dd5decbedb2f17b43a..1c943638bfbda8281d2c9038e9024591823e2b5e 100644
+index 78d0890d40041d827e9c8c378d0f1149510aed23..3b48e666f6d6eddaf882f36c1238bd331c0c1ddf 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
 @@ -1114,11 +1114,23 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
@@ -30,7 +30,7 @@ index 626fe2af05fecd41b777b5dd5decbedb2f17b43a..1c943638bfbda8281d2c9038e9024591
 +    }
 +    // Paper end
      @Override
-     public boolean hasDisplayName() {
+     public boolean hasCustomName() { // Paper
          return this.displayName != null;
 @@ -1292,6 +1304,14 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
          return this.lore == null ? null : new ArrayList<String>(Lists.transform(this.lore, CraftChatMessage::fromComponent));

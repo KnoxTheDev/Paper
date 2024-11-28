@@ -1622,10 +1622,10 @@ index 35c6594fd1040a1af1029e7260e5e3a9307b107d..d58719ee75bef8bc265bfc81bc5d88a4
      void addChargedProjectile(@NotNull ItemStack item);
  }
 diff --git a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
-index fabddfe3763e143b5a769764cb324f97876ccb1c..480dd9a5ff334e6f32b98aa0108ff02e6f7077ab 100644
+index e4b2adbf5d9034bde54f864f5edbdb5d7bafcc13..ba2f679eb5c700b5265f7bf557977acd5e2c0148 100644
 --- a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
 +++ b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
-@@ -744,7 +744,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -776,7 +776,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
       * The returned component is a snapshot of its current state and does not
       * reflect a live view of what is on an item. After changing any value on
       * this component, it must be set with
@@ -1634,7 +1634,7 @@ index fabddfe3763e143b5a769764cb324f97876ccb1c..480dd9a5ff334e6f32b98aa0108ff02e
       * to apply the changes.
       *
       * @return component
-@@ -753,7 +753,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -785,7 +785,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
      JukeboxPlayableComponent getJukeboxPlayable();
  
      /**
@@ -1643,7 +1643,7 @@ index fabddfe3763e143b5a769764cb324f97876ccb1c..480dd9a5ff334e6f32b98aa0108ff02e
       *
       * @param jukeboxPlayable new component
       */
-@@ -780,7 +780,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -812,7 +812,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
      /**
       * Return an immutable copy of all {@link Attribute}s and their
       * {@link AttributeModifier}s for a given {@link EquipmentSlot}.<br>

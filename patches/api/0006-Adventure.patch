@@ -4713,35 +4713,76 @@ index 9bab73c3c2ca759b8e1c7d07d98cc593c961666a..f0c6943da3f783101ca647b75b3230fa
              throw new UnsupportedOperationException("Not supported yet.");
          }
 diff --git a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
-index 1d810042652dac9c35dd358f9d87e3dd2cebc48e..fabddfe3763e143b5a769764cb324f97876ccb1c 100644
+index 1d810042652dac9c35dd358f9d87e3dd2cebc48e..e4b2adbf5d9034bde54f864f5edbdb5d7bafcc13 100644
 --- a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
 +++ b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
-@@ -44,6 +44,24 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
-      */
-     boolean hasDisplayName();
+@@ -37,12 +37,62 @@ import org.jetbrains.annotations.Nullable;
+  */
+ public interface ItemMeta extends Cloneable, ConfigurationSerializable, PersistentDataHolder {
  
 +    // Paper start
-+    /**
-+     * Gets the display name.
-+     *
-+     * <p>Plugins should check that {@link #hasDisplayName()} returns <code>true</code> before calling this method.</p>
-+     *
-+     * @return the display name
-+     */
-+    net.kyori.adventure.text.@Nullable Component displayName();
+     /**
+-     * Checks for existence of a display name.
++     * Checks for existence of a custom name.
+      *
+-     * @return true if this has a display name
++     * @return true if this has a custom name
+      */
+-    boolean hasDisplayName();
++    @ApiStatus.Obsolete
++    default boolean hasDisplayName() {
++        return this.hasCustomName();
++    }
 +
 +    /**
-+     * Sets the display name.
++     * Checks for existence of a custom name.
 +     *
-+     * @param displayName the display name to set
++     * @return true if this has a custom name
 +     */
-+    void displayName(final net.kyori.adventure.text.@Nullable Component displayName);
++    boolean hasCustomName();
++
++    /**
++     * Gets the custom name.
++     *
++     * <p>Plugins should check that {@link #hasCustomName()} returns <code>true</code> before calling this method.</p>
++     *
++     * @return the custom name
++     */
++    net.kyori.adventure.text.@Nullable Component customName();
++
++    /**
++     * Sets the custom name.
++     *
++     * @param customName the custom name to set
++     */
++    void customName(final net.kyori.adventure.text.@Nullable Component customName);
++
++    /**
++     * Gets the custom name.
++     *
++     * <p>Plugins should check that {@link #hasCustomName()} returns <code>true</code> before calling this method.</p>
++     *
++     * @return the custom name
++     */
++    @ApiStatus.Obsolete
++    default net.kyori.adventure.text.@Nullable Component displayName() {
++        return this.customName();
++    }
++
++    /**
++     * Sets the custom name.
++     *
++     * @param displayName the custom name to set
++     */
++    @ApiStatus.Obsolete
++    default void displayName(final net.kyori.adventure.text.@Nullable Component displayName) {
++        this.customName(displayName);
++    }
 +    // Paper end
-+
+ 
      /**
       * Gets the display name that is set.
-      * <p>
-@@ -51,7 +69,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -51,7 +101,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
       * before calling this method.
       *
       * @return the display name that is set
@@ -4751,7 +4792,7 @@ index 1d810042652dac9c35dd358f9d87e3dd2cebc48e..fabddfe3763e143b5a769764cb324f97
      @NotNull
      String getDisplayName();
  
-@@ -59,7 +79,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -59,7 +111,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
       * Sets the display name.
       *
       * @param name the name to set
@@ -4761,7 +4802,7 @@ index 1d810042652dac9c35dd358f9d87e3dd2cebc48e..fabddfe3763e143b5a769764cb324f97
      void setDisplayName(@Nullable String name);
  
      /**
-@@ -72,6 +94,32 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -72,6 +126,32 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
       */
      boolean hasItemName();
  
@@ -4794,7 +4835,7 @@ index 1d810042652dac9c35dd358f9d87e3dd2cebc48e..fabddfe3763e143b5a769764cb324f97
      /**
       * Gets the item name that is set.
       * <br>
-@@ -82,7 +130,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -82,7 +162,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
       * calling this method.
       *
       * @return the item name that is set
@@ -4804,7 +4845,7 @@ index 1d810042652dac9c35dd358f9d87e3dd2cebc48e..fabddfe3763e143b5a769764cb324f97
      @NotNull
      String getItemName();
  
-@@ -93,7 +143,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -93,7 +175,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
       * anvil, is not styled with italics, and does not show labels.
       *
       * @param name the name to set
@@ -4814,7 +4855,7 @@ index 1d810042652dac9c35dd358f9d87e3dd2cebc48e..fabddfe3763e143b5a769764cb324f97
      void setItemName(@Nullable String name);
  
      /**
-@@ -134,6 +186,24 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -134,6 +218,24 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
       */
      boolean hasLore();
  
@@ -4839,7 +4880,7 @@ index 1d810042652dac9c35dd358f9d87e3dd2cebc48e..fabddfe3763e143b5a769764cb324f97
      /**
       * Gets the lore that is set.
       * <p>
-@@ -141,7 +211,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -141,7 +243,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
       * calling this method.
       *
       * @return a list of lore that is set
@@ -4849,7 +4890,7 @@ index 1d810042652dac9c35dd358f9d87e3dd2cebc48e..fabddfe3763e143b5a769764cb324f97
      @Nullable
      List<String> getLore();
  
-@@ -150,7 +222,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -150,7 +254,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
       * Removes lore when given null.
       *
       * @param lore the lore that will be set
@@ -4859,6 +4900,40 @@ index 1d810042652dac9c35dd358f9d87e3dd2cebc48e..fabddfe3763e143b5a769764cb324f97
      void setLore(@Nullable List<String> lore);
  
      /**
+diff --git a/src/main/java/org/bukkit/inventory/meta/PotionMeta.java b/src/main/java/org/bukkit/inventory/meta/PotionMeta.java
+index 6a70b79f3ceea9c05692a525dc1ec94a476da978..9a687909f7a2dc3115e6fdfcea8a0821324a9453 100644
+--- a/src/main/java/org/bukkit/inventory/meta/PotionMeta.java
++++ b/src/main/java/org/bukkit/inventory/meta/PotionMeta.java
+@@ -151,25 +151,25 @@ public interface PotionMeta extends ItemMeta {
+      *
+      * @return true if this has a custom potion name
+      */
+-    boolean hasCustomName();
++    boolean hasCustomPotionName(); // Paper
+ 
+     /**
+      * Gets the potion name translation suffix that is set.
+      * <p>
+-     * Plugins should check that hasCustomName() returns <code>true</code>
++     * Plugins should check that {@link #hasCustomPotionName()} returns <code>true</code>
+      * before calling this method.
+      *
+      * @return the potion name that is set
+      */
+     @Nullable
+-    String getCustomName();
++    String getCustomPotionName();
+ 
+     /**
+      * Sets the potion name translation suffix.
+      *
+      * @param name the name to set
+      */
+-    void setCustomName(@Nullable String name);
++    void setCustomPotionName(@Nullable String name);
+ 
+     @Override
+     PotionMeta clone();
 diff --git a/src/main/java/org/bukkit/inventory/meta/WritableBookMeta.java b/src/main/java/org/bukkit/inventory/meta/WritableBookMeta.java
 index 12595536080ffe09df2b6ecdb83d846f50100d38..9fc47c879ee6b8edf2503f20e4736c2997d2de2e 100644
 --- a/src/main/java/org/bukkit/inventory/meta/WritableBookMeta.java

@@ -228,10 +228,10 @@ index 7ff6d60deb129e23b2a4d772aee123eb6c0b6433..52a2763773b234c581b2dcc6f0584f8d
          return key;
      }
 diff --git a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
-index 3fdba38fd5e75ddcbfca9cee70a606bfa4a539bf..66219e3855aef885341132a7456af54cf315475f 100644
+index 00d55e2b59a7aacd4746d0089a5d092f9ed70c49..f451a13f67d91ee12bac890265338db740f452cc 100644
 --- a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
 +++ b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
-@@ -1010,4 +1010,98 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -1042,4 +1042,98 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
      @SuppressWarnings("javadoc")
      @NotNull
      ItemMeta clone();

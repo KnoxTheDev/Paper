@@ -2730,7 +2730,7 @@ index 709330ca9caa82a6de71767b3d5c32f97ea1d68b..daf20aa9a83a2583c0c61a4123cc2e52
  
      public boolean logIPs() {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 785c7e11f92610be58b624d252d1858658496af7..99607edee9fba8df87f0525bf0eadee865ab38a4 100644
+index c60e7f27ea4060e455a18feb6f6a7919e80a8fc8..e941b2f989333932e81cf7d04f70d0e7aad89432 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -190,6 +190,7 @@ import net.minecraft.world.item.trading.MerchantOffers;
@@ -5228,7 +5228,7 @@ index c71a4971f127fdfc753306019313ce1a31201120..fd3b12477c30d1eabdbe57ea77902793
 +    // Paper end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
-index 2d68086ef09b5f2d6b3d3e6200e621c23747b25a..f3789ea732b17a311d8203a58a97d11370ec7863 100644
+index 2d68086ef09b5f2d6b3d3e6200e621c23747b25a..78d0890d40041d827e9c8c378d0f1149510aed23 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
 @@ -1097,6 +1097,18 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
@@ -5237,12 +5237,12 @@ index 2d68086ef09b5f2d6b3d3e6200e621c23747b25a..f3789ea732b17a311d8203a58a97d113
  
 +    // Paper start
 +    @Override
-+    public net.kyori.adventure.text.Component displayName() {
++    public net.kyori.adventure.text.Component customName() {
 +        return displayName == null ? null : io.papermc.paper.adventure.PaperAdventure.asAdventure(displayName);
 +    }
 +
 +    @Override
-+    public void displayName(final net.kyori.adventure.text.Component displayName) {
++    public void customName(final net.kyori.adventure.text.Component displayName) {
 +        this.displayName = displayName == null ? null : io.papermc.paper.adventure.PaperAdventure.asVanilla(displayName);
 +    }
 +    // Paper end
@@ -5250,6 +5250,15 @@ index 2d68086ef09b5f2d6b3d3e6200e621c23747b25a..f3789ea732b17a311d8203a58a97d113
      @Override
      public String getDisplayName() {
          return CraftChatMessage.fromComponent(this.displayName);
+@@ -1108,7 +1120,7 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+     }
+ 
+     @Override
+-    public boolean hasDisplayName() {
++    public boolean hasCustomName() { // Paper
+         return this.displayName != null;
+     }
+ 
 @@ -1127,6 +1139,18 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
          return this.itemName != null;
      }
@@ -5288,6 +5297,31 @@ index 2d68086ef09b5f2d6b3d3e6200e621c23747b25a..f3789ea732b17a311d8203a58a97d113
      @Override
      public boolean hasRepairCost() {
          return this.repairCost > 0;
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java
+index 533c600d632eb733c121f5d8189142726b091713..deb73dfb5a3a29f3cbe291d7cabfd7f5d82947ae 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java
+@@ -306,17 +306,17 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
+     }
+ 
+     @Override
+-    public boolean hasCustomName() {
++    public boolean hasCustomPotionName() {
+         return this.customName != null;
+     }
+ 
+     @Override
+-    public String getCustomName() {
++    public String getCustomPotionName() {
+         return this.customName;
+     }
+ 
+     @Override
+-    public void setCustomName(String customName) {
++    public void setCustomPotionName(String customName) {
+         this.customName = customName;
+     }
+ 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/trim/CraftTrimMaterial.java b/src/main/java/org/bukkit/craftbukkit/inventory/trim/CraftTrimMaterial.java
 index 38fb47bbfcec739be795b46cfb7c2c41a8379fea..caf7e4312e95e90dd0822355c8832006e69a2700 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/trim/CraftTrimMaterial.java

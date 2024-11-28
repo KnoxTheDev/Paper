@@ -590,7 +590,7 @@ index e455eb21abf121dc6ff10ff8a13dd06f67096a8f..bbc01e7c192ae6689c301670047ff114
          return origin;
      }
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index a8fe8c2f4327f0bee60eeac565620117f3fde2ee..7ef12976430272d814374ee066e975457111b7f3 100644
+index 5260460c08be56875617959322448f8fb159d5bb..ac17edc178e4129a511b171514546e31fd00ae0e 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
 @@ -418,9 +418,8 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
@@ -1748,10 +1748,10 @@ index 597a18a767b68b47e81454b7d44613c7178c1366..bc3440eb72127824b3961fbdae583bb6
      public ItemStack getInput() {
          return this.ingredient.getItemStack();
 diff --git a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
-index 480dd9a5ff334e6f32b98aa0108ff02e6f7077ab..59e1987f0f0accef369cc29dbec464185eb7c99c 100644
+index ba2f679eb5c700b5265f7bf557977acd5e2c0148..88c1d8279bb4c1b477dc0987475c724a7fe5dd12 100644
 --- a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
 +++ b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
-@@ -151,6 +151,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -183,6 +183,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
      /**
       * Checks for existence of a localized name.
       *
@@ -1759,7 +1759,7 @@ index 480dd9a5ff334e6f32b98aa0108ff02e6f7077ab..59e1987f0f0accef369cc29dbec46418
       * @return true if this has a localized name
       * @deprecated meta no longer exists
       */
-@@ -163,6 +164,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -195,6 +196,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
       * Plugins should check that hasLocalizedName() returns <code>true</code>
       * before calling this method.
       *
@@ -1767,7 +1767,7 @@ index 480dd9a5ff334e6f32b98aa0108ff02e6f7077ab..59e1987f0f0accef369cc29dbec46418
       * @return the localized name that is set
       * @deprecated meta no longer exists
       */
-@@ -173,6 +175,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -205,6 +207,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
      /**
       * Sets the localized name.
       *
@@ -1775,7 +1775,7 @@ index 480dd9a5ff334e6f32b98aa0108ff02e6f7077ab..59e1987f0f0accef369cc29dbec46418
       * @param name the name to set
       * @deprecated meta no longer exists
       */
-@@ -749,7 +752,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+@@ -781,7 +784,7 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
       *
       * @return component
       */
